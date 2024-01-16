@@ -1,10 +1,14 @@
 package com.xiaojinzi.mvi.domain
 
 import androidx.annotation.Keep
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 
 enum class MVIInitState {
     Initializing,
@@ -20,45 +24,90 @@ data class MVIDataWrap<T>(
 )
 
 sealed class MVIIntentWrap {
-    data object Retry
-    sealed class MVIIntent
+    data object RetryInit: MVIIntentWrap()
+    sealed class MVIIntent: MVIIntentWrap()
 }
 
 /**
  * 业务逻辑类的基类
  */
-interface BaseMVIUseCase<MVIIntent: MVIIntentWrap.MVIIntent, MVIData> {
+interface BaseMVIUseCase<MVIData> {
 
-    val dataState: Flow<MVIData>
+    val dataState: Flow<MVIData?>
 
     /**
      * 添加一个意图
      */
-    fun addIntent(intent: MVIIntent)
+    fun addIntent(intent: MVIIntentWrap)
 
     /**
      * 处理意图
      */
     @Throws(Exception::class)
     suspend fun intentProcess(
-        intent: MVIIntent,
-        previousData: MVIData,
-    ): MVIData
+        intent: MVIIntentWrap.MVIIntent,
+        previousData: MVIData?,
+    ): MVIData?
+
+    fun destroy()
 
 }
 
-abstract class BaseMVIUseCaseImpl<MVIIntent: MVIIntentWrap.MVIIntent, MVIData>(
+class BaseMVIUseCaseImpl<MVIData>(
     initData: MVIData? = null,
-): BaseMVIUseCase<MVIIntent, MVIData?> {
+) : BaseMVIUseCase<MVIData> {
+
+    private val scope = MainScope()
+
+    private val intentEvent: MutableSharedFlow<MVIIntentWrap> = MutableSharedFlow(
+        extraBufferCapacity = Int.MAX_VALUE,
+    )
 
     final override val dataState: Flow<MVIData?> = MutableStateFlow(value = initData)
 
-    final override fun addIntent(intent: MVIIntent) {
+    final override fun addIntent(intent: MVIIntentWrap) {
+        intentEvent.tryEmit(
+            value = intent,
+        )
+    }
 
+    override suspend fun intentProcess(
+        intent: MVIIntentWrap.MVIIntent,
+        previousData: MVIData?
+    ): MVIData? {
+        return previousData
+    }
+
+    override fun destroy() {
+        scope.cancel()
+    }
+
+    /**
+     * 初始化数据
+     */
+    fun initData(
+        previousData: MVIData,
+    ): MVIData {
+        return previousData
     }
 
     init {
-        addIntent(intent = MVIIntentWrap.Retry)
+        intentEvent
+            .onEach {
+                when (it) {
+                    is MVIIntentWrap.RetryInit -> {
+
+                    }
+                    is MVIIntentWrap.MVIIntent -> {
+                        val currentData = dataState.firstOrNull()
+                        val newData = intentProcess(
+                            intent = it,
+                            previousData = currentData,
+                        )
+                    }
+                }
+            }
+            .launchIn(scope = scope)
     }
 
 }
