@@ -11,20 +11,30 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.lifecycleScope
+import com.xiaojinzi.androidmvi.demo.test.LoginUseCaseImpl
 import com.xiaojinzi.androidmvi.demo.ui.theme.AndroidMVITheme
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.async
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.channels.broadcast
+import kotlinx.coroutines.channels.consumeEach
+import kotlinx.coroutines.channels.produce
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.selects.select
 
 class MainActivity : ComponentActivity() {
 
     private val channel: Channel<String> = Channel()
 
+    private val loginUseCase = LoginUseCaseImpl()
+
+    @OptIn(ExperimentalCoroutinesApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -41,7 +51,7 @@ class MainActivity : ComponentActivity() {
 
         channel
             .receiveAsFlow()
-            .flowOn(context = Dispatchers.IO)
+            // .flowOn(context = Dispatchers.IO)
             .onEach {
                 delay(3000)
                 println("item: $it")
@@ -56,6 +66,18 @@ class MainActivity : ComponentActivity() {
                 println("结束发送：$count")
                 count++
             }
+        }
+
+        lifecycleScope.launch {
+
+            produce<String>{
+
+            }.onReceive
+
+            async { "123"  }.onAwait
+
+            select {  }
+
         }
 
     }

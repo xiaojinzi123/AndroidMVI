@@ -23,64 +23,60 @@ data class MVIDataWrap<T>(
     val data: T,
 )
 
-sealed class MVIIntentWrap {
-    data object RetryInit: MVIIntentWrap()
-    sealed class MVIIntent: MVIIntentWrap()
+sealed class MVIIntentInner {
+    data object RetryInit : MVIIntentInner()
 }
 
 /**
  * 业务逻辑类的基类
  */
-interface BaseMVIUseCase<MVIData> {
+interface BaseMVIUseCase<MVIIntent : Any, MVIData> {
 
     val dataState: Flow<MVIData?>
 
     /**
      * 添加一个意图
      */
-    fun addIntent(intent: MVIIntentWrap)
+    fun addIntent(intent: MVIIntent)
 
     /**
-     * 处理意图
+     * Intent 的处理
      */
-    @Throws(Exception::class)
     suspend fun intentProcess(
-        intent: MVIIntentWrap.MVIIntent,
-        previousData: MVIData?,
+        intent: MVIIntent,
+        currentData: MVIData?,
     ): MVIData?
 
     fun destroy()
 
 }
 
-class BaseMVIUseCaseImpl<MVIData>(
+class BaseMVIUseCaseImpl<MVIIntent : Any, MVIData>(
     initData: MVIData? = null,
-) : BaseMVIUseCase<MVIData> {
+) : BaseMVIUseCase<MVIIntent, MVIData> {
 
     private val scope = MainScope()
 
-    private val intentEvent: MutableSharedFlow<MVIIntentWrap> = MutableSharedFlow(
+    private val intentEvent: MutableSharedFlow<Any> = MutableSharedFlow(
         extraBufferCapacity = Int.MAX_VALUE,
     )
 
-    final override val dataState: Flow<MVIData?> = MutableStateFlow(value = initData)
+    override val dataState = MutableStateFlow(value = initData)
 
-    final override fun addIntent(intent: MVIIntentWrap) {
+    override fun addIntent(intent: MVIIntent) {
         intentEvent.tryEmit(
             value = intent,
         )
     }
 
-    override suspend fun intentProcess(
-        intent: MVIIntentWrap.MVIIntent,
-        previousData: MVIData?
-    ): MVIData? {
-        return previousData
-    }
-
     override fun destroy() {
         scope.cancel()
     }
+
+    override suspend fun intentProcess(
+        intent: MVIIntent,
+        currentData: MVIData?,
+    ): MVIData? = currentData
 
     /**
      * 初始化数据
@@ -95,15 +91,22 @@ class BaseMVIUseCaseImpl<MVIData>(
         intentEvent
             .onEach {
                 when (it) {
-                    is MVIIntentWrap.RetryInit -> {
+                    is MVIIntentInner.RetryInit -> {
 
                     }
-                    is MVIIntentWrap.MVIIntent -> {
+
+                    else -> {
                         val currentData = dataState.firstOrNull()
-                        val newData = intentProcess(
-                            intent = it,
-                            previousData = currentData,
-                        )
+                        runCatching {
+                            @Suppress("UNCHECKED_CAST")
+                            val newData = intentProcess(
+                                intent = it as MVIIntent,
+                                currentData = currentData,
+                            )
+                            dataState.emit(
+                                value = newData
+                            )
+                        }
                     }
                 }
             }
