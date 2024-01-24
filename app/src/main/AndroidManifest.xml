@@ -13,7 +13,7 @@
         android:theme="@style/Theme.AndroidMVI"
         tools:targetApi="31">
         <activity
-            android:name="com.xiaojinzi.androidmvi.demo.MainActivity"
+            android:name="com.xiaojinzi.androidmvi.demo.module.login.view.MainActivity"
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.AndroidMVI">
