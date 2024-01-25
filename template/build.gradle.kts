@@ -30,14 +30,21 @@ android {
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_17.toString()
     }
+    buildFeatures {
+        compose = true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.5.1"
+        kotlinCompilerVersion = "1.9.0"
+    }
 }
 
 dependencies {
-
     api(project(":mvi"))
     api(libs.android.support.ktx)
     api(libs.android.support.annotation)
     api(libs.android.support.compose)
+    api(libs.compose.runtime)
     api(libs.compose.runtime.android)
     api(libs.compose.ui.android)
     api(libs.compose.foundation.android)
@@ -45,7 +52,4 @@ dependencies {
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.11.0")
-    testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.test.ext:junit:1.1.5")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
 }

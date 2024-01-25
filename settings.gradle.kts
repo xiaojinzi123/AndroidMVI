@@ -18,6 +18,7 @@ dependencyResolutionManagement {
             version("compose-bom", "2023.10.01")
             library("compose-bom", "androidx.compose", "compose-bom").versionRef("compose-bom")
             version("compose", "1.5.4")
+            library("compose-runtime", "androidx.compose.runtime", "runtime").versionRef("compose")
             library("compose-runtime-android", "androidx.compose.runtime", "runtime-android").versionRef("compose")
             library("compose-ui-android", "androidx.compose.ui", "ui-android").versionRef("compose")
             library("compose-foundation-android", "androidx.compose.foundation", "foundation-layout-android").versionRef("compose")

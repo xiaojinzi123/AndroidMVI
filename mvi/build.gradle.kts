@@ -30,12 +30,25 @@ android {
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_17.toString()
     }
+    buildFeatures {
+        compose = true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.5.1"
+        kotlinCompilerVersion = "1.9.0"
+    }
 }
 
 dependencies {
 
-    implementation(libs.android.support.ktx)
-    implementation(libs.android.support.annotation)
+    api(libs.android.support.ktx)
+    api(libs.android.support.annotation)
+    api(libs.android.support.compose)
+    api(libs.compose.runtime)
+    api(libs.compose.runtime.android)
+    api(libs.compose.ui.android)
+    api(libs.compose.foundation.android)
+    api(libs.lifecycle.viewmodel.compose)
     implementation(kotlin("reflect"))
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
