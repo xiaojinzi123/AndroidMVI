@@ -11,6 +11,10 @@ pluginManagement {
 dependencyResolutionManagement {
     versionCatalogs {
         create("libs") {
+            version("core", "1.12.0")
+            library("core", "androidx.core", "core-ktx").versionRef("core")
+            version("appcompat", "1.6.1")
+            library("appcompat", "androidx.appcompat", "appcompat").versionRef("appcompat")
             version("android_support_version", "v1.0-beta208")
             library("android-support-ktx", "com.github.xiaojinzi123.AndroidSupport", "lib-ktx").versionRef("android_support_version")
             library("android-support-annotation", "com.github.xiaojinzi123.AndroidSupport", "lib-annotation").versionRef("android_support_version")

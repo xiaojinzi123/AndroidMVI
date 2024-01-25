@@ -41,15 +41,4 @@ android {
 
 dependencies {
     api(project(":mvi"))
-    api(libs.android.support.ktx)
-    api(libs.android.support.annotation)
-    api(libs.android.support.compose)
-    api(libs.compose.runtime)
-    api(libs.compose.runtime.android)
-    api(libs.compose.ui.android)
-    api(libs.compose.foundation.android)
-    api(libs.lifecycle.viewmodel.compose)
-    implementation("androidx.core:core-ktx:1.12.0")
-    implementation("androidx.appcompat:appcompat:1.6.1")
-    implementation("com.google.android.material:material:1.11.0")
 }

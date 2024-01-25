@@ -51,5 +51,4 @@ android {
 dependencies {
     implementation(project(":template"))
     implementation(project(":mvi"))
-    implementation("androidx.core:core-ktx:1.12.0")
 }
