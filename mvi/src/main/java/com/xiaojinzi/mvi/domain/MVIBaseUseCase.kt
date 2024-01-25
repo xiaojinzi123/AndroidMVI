@@ -1,36 +1,35 @@
 package com.xiaojinzi.mvi.domain
 
 import androidx.annotation.CallSuper
-import com.xiaojinzi.mvi.anno.IntentProcess
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.cancel
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import kotlin.coroutines.suspendCoroutine
-import kotlin.reflect.KCallable
-import kotlin.reflect.KClass
-import kotlin.reflect.full.callSuspend
-import kotlin.reflect.jvm.isAccessible
-
-private class IntentMethodException(
-    method: KCallable<*>,
-    intentProcess: IntentProcess,
-) : RuntimeException("方法 $method 必须是 suspend 标记的, 并且方法参数只能是一个, 类型必须是：${intentProcess.value.java}")
 
 /**
- * 业务逻辑类的基类
+ * 这个接口中的方法不可以新增了哦!!!
+ * 这个 BaseUseCase 由于每一个 UseCase 都要继承
+ * 但是 UseCase 之间又可能随意组合使用. 比如下面的例子：
+ * class UseCase1: BaseUseCase
+ * class UseCase2: BaseUseCase
+ * // 逻辑类 UseCase3 组合 UseCase1 和 UseCase2 的功能
+ * class UseCase3: BaseUseCase, UseCase1, UseCase2
+ *
+ * class UseCase3Impl(
+ *      private val useCase1: UseCase1 = UseCase1Impl(),
+ *      private val useCase2: UseCase2 = UseCase2Impl(),
+ * ): BaseUseCaseImpl(), UseCase3,
+ * UseCase1 by useCase1,
+ * UseCase2 by useCase2 {
+ *      // some code
+ *      override fun destroy() {
+ *          super.destroy()
+ *          useCase1.destroy()
+ *          useCase2.destroy()
+ *      }
+ * }
+ *
+ * 所有其他的基础功能, 都应该扩展此接口来实现. 不能在这个接口上新增方法了
  */
 interface MVIBaseUseCase {
-
-    /**
-     * 添加一个意图
-     */
-    fun addIntent(intent: Any)
 
     /**
      * 销毁
@@ -41,79 +40,11 @@ interface MVIBaseUseCase {
 
 open class MVIBaseUseCaseImpl : MVIBaseUseCase {
 
-    private val scope = MainScope()
-
-    private val intentEvent: MutableSharedFlow<Any> = MutableSharedFlow(
-        extraBufferCapacity = Int.MAX_VALUE,
-    )
-
-    private val intentProcessMethodMap = mutableMapOf<KClass<*>, KCallable<*>>()
-
-    override fun addIntent(intent: Any) {
-        intentEvent.tryEmit(
-            value = intent,
-        )
-    }
+    val scope = MainScope()
 
     @CallSuper
     override fun destroy() {
         scope.cancel()
-    }
-
-    init {
-
-        // 收集意图
-        this@MVIBaseUseCaseImpl::class
-            .members
-            .forEach { method ->
-
-                if (!method.isSuspend) {
-                    return@forEach
-                }
-
-                val intentProcessAnno = method
-                    .annotations
-                    .find {
-                        it is IntentProcess
-                    } as? IntentProcess
-
-                intentProcessAnno?.let {
-                    if (method.parameters.size == 2) {
-                        if (method.parameters[1].type.classifier != intentProcessAnno.value) {
-                            throw IntentMethodException(
-                                method = method,
-                                intentProcess = intentProcessAnno,
-                            )
-                        }
-                        intentProcessMethodMap[
-                            intentProcessAnno.value
-                        ] = method
-                    } else {
-                        throw IntentMethodException(
-                            method = method,
-                            intentProcess = intentProcessAnno,
-                        )
-                    }
-                }
-
-            }
-
-        // 处理意图
-        intentEvent
-            .onEach { intentEvent ->
-                println("准备处理意图：$intentEvent")
-                intentProcessMethodMap.get(
-                    key = intentEvent::class
-                )?.run {
-                    this.isAccessible = true
-                    this.callSuspend(
-                        this@MVIBaseUseCaseImpl, intentEvent
-                    )
-                }
-                println("处理完毕意图：$intentEvent")
-            }
-            .launchIn(scope = scope)
-
     }
 
 }

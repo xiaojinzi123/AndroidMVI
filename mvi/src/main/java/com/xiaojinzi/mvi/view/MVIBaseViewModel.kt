@@ -26,9 +26,7 @@ MVIBaseViewModel constructor() : ViewModel() {
     @CallSuper
     override fun onCleared() {
         super.onCleared()
-        if (this is MVIBaseUseCase) {
-            destroy()
-        }
+        (this as? MVIBaseUseCase)?.destroy()
     }
 
 }

@@ -4,7 +4,7 @@ import androidx.annotation.Keep
 import androidx.annotation.StringRes
 
 @Keep
-internal data class StringItemDto(
+data class MVIStringItem(
     @StringRes
     val valueRsd: Int? = null,
     val value: String? = null,
@@ -22,8 +22,8 @@ internal data class StringItemDto(
 
 }
 
-internal val EmptyStringItemDto = StringItemDto(value = "")
+internal val EmptyStringItemDto = MVIStringItem(value = "")
 
-internal fun @receiver:StringRes Int.toStringItemDto() = StringItemDto(valueRsd = this)
+internal fun @receiver:StringRes Int.toStringItemDto() = MVIStringItem(valueRsd = this)
 
-internal fun String.toStringItemDto() = StringItemDto(value = this)
+internal fun String.toStringItemDto() = MVIStringItem(value = this)
