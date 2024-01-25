@@ -29,7 +29,7 @@ import kotlinx.coroutines.cancel
  *
  * 所有其他的基础功能, 都应该扩展此接口来实现. 不能在这个接口上新增方法了
  */
-interface MVIBaseUseCase {
+interface BaseUseCase {
 
     /**
      * 销毁
@@ -38,7 +38,10 @@ interface MVIBaseUseCase {
 
 }
 
-open class MVIBaseUseCaseImpl : MVIBaseUseCase {
+/**
+ * 这个类需要用继承的方式来使用
+ */
+open class BaseUseCaseImpl : BaseUseCase {
 
     val scope = MainScope()
 

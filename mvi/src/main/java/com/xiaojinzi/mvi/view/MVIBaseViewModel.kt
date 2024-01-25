@@ -2,7 +2,7 @@ package com.xiaojinzi.mvi.view
 
 import androidx.annotation.CallSuper
 import androidx.lifecycle.ViewModel
-import com.xiaojinzi.mvi.domain.MVIBaseUseCase
+import com.xiaojinzi.mvi.domain.BaseUseCase
 
 /**
  * 每一个 [ViewModel] 的基类. 定义了一些公用的方法
@@ -26,7 +26,7 @@ MVIBaseViewModel constructor() : ViewModel() {
     @CallSuper
     override fun onCleared() {
         super.onCleared()
-        (this as? MVIBaseUseCase)?.destroy()
+        (this as? BaseUseCase)?.destroy()
     }
 
 }

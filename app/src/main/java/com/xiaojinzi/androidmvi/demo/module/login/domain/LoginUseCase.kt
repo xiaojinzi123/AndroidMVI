@@ -4,8 +4,8 @@ import android.content.Context
 import android.widget.Toast
 import androidx.annotation.UiContext
 import com.xiaojinzi.mvi.anno.IntentProcess
-import com.xiaojinzi.mvi.domain.MVIIntentUseCase
-import com.xiaojinzi.mvi.domain.MVIIntentUseCaseImpl
+import com.xiaojinzi.mvi.template.domain.BusinessUseCase
+import com.xiaojinzi.mvi.template.domain.BusinessUseCaseImpl
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -19,7 +19,7 @@ sealed class LoginIntent {
 
 }
 
-interface LoginUseCase : MVIIntentUseCase {
+interface LoginUseCase : BusinessUseCase {
 
     val nameStateOb: MutableStateFlow<String>
 
@@ -30,7 +30,7 @@ interface LoginUseCase : MVIIntentUseCase {
 }
 
 class LoginUseCaseImpl(
-) : MVIIntentUseCaseImpl(), LoginUseCase {
+) : BusinessUseCaseImpl(), LoginUseCase {
 
     override val nameStateOb = MutableStateFlow(value = "")
 
@@ -49,6 +49,11 @@ class LoginUseCaseImpl(
     ) {
         delay(1000)
         Toast.makeText(intent.context, "模拟登录成功", Toast.LENGTH_SHORT).show()
+    }
+
+    override suspend fun initData() {
+        super.initData()
+        delay(2000)
     }
 
 }

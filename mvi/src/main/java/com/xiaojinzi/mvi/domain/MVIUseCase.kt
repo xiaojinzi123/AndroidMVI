@@ -15,9 +15,9 @@ private class IntentMethodException(
 ) : RuntimeException("方法 $method 必须是 suspend 标记的, 并且方法参数只能是一个, 类型必须是：${intentProcess.value.java}")
 
 /**
- * 从 [MVIBaseUseCase] 扩展了 [addIntent] 方法, 来实现 MVI 意图的唯一入口
+ * 从 [BaseUseCase] 扩展了 [addIntent] 方法, 来实现 MVI 意图的唯一入口
  */
-interface MVIIntentUseCase : MVIBaseUseCase {
+interface MVIUseCase : BaseUseCase {
 
     /**
      * 添加一个意图
@@ -26,7 +26,7 @@ interface MVIIntentUseCase : MVIBaseUseCase {
 
 }
 
-open class MVIIntentUseCaseImpl : MVIBaseUseCaseImpl(), MVIIntentUseCase {
+open class MVIUseCaseImpl : BaseUseCaseImpl(), MVIUseCase {
 
     private val intentEvent: MutableSharedFlow<Any> = MutableSharedFlow(
         extraBufferCapacity = Int.MAX_VALUE,
@@ -43,7 +43,7 @@ open class MVIIntentUseCaseImpl : MVIBaseUseCaseImpl(), MVIIntentUseCase {
     init {
 
         // 收集意图
-        this@MVIIntentUseCaseImpl::class
+        this@MVIUseCaseImpl::class
             .members
             .forEach { method ->
 
@@ -88,7 +88,7 @@ open class MVIIntentUseCaseImpl : MVIBaseUseCaseImpl(), MVIIntentUseCase {
                     )?.run {
                         this.isAccessible = true
                         this.callSuspend(
-                            this@MVIIntentUseCaseImpl, intentEvent
+                            this@MVIUseCaseImpl, intentEvent
                         )
                     }
                 }

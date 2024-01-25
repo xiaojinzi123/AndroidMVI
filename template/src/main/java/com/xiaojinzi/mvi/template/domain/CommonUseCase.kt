@@ -3,8 +3,8 @@ package com.xiaojinzi.mvi.template.domain
 import android.widget.Toast
 import androidx.annotation.Keep
 import androidx.annotation.StringRes
-import com.xiaojinzi.mvi.domain.MVIBaseUseCase
-import com.xiaojinzi.mvi.domain.MVIBaseUseCaseImpl
+import com.xiaojinzi.mvi.domain.BaseUseCase
+import com.xiaojinzi.mvi.domain.BaseUseCaseImpl
 import com.xiaojinzi.support.annotation.PublishHotObservable
 import com.xiaojinzi.support.annotation.StateHotObservable
 import com.xiaojinzi.support.bean.StringItemDto
@@ -14,7 +14,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 
-interface MVICommonDialogUseCase : MVIBaseUseCase {
+interface DialogUseCase : BaseUseCase {
 
     /**
      * 对话框的返回类型
@@ -46,12 +46,12 @@ interface MVICommonDialogUseCase : MVIBaseUseCase {
 
 }
 
-class MVICommonDialogUseCaseImpl : MVIBaseUseCaseImpl(), MVICommonDialogUseCase {
+class DialogUseCaseImpl : BaseUseCaseImpl(), DialogUseCase {
 
-    override val confirmDialogStateOb: MutableStateFlow<MVICommonDialogUseCase.ConfirmDialogModel?> =
+    override val confirmDialogStateOb: MutableStateFlow<DialogUseCase.ConfirmDialogModel?> =
         MutableStateFlow(value = null)
 
-    override val confirmDialogResultEventOb: MutableSharedFlow<MVICommonDialogUseCase.ConfirmDialogResultType> =
+    override val confirmDialogResultEventOb: MutableSharedFlow<DialogUseCase.ConfirmDialogResultType> =
         MutableSharedFlow(
             replay = 0,
             extraBufferCapacity = 1,
@@ -62,8 +62,9 @@ class MVICommonDialogUseCaseImpl : MVIBaseUseCaseImpl(), MVICommonDialogUseCase 
 
 /**
  * 常用的一个业务 UseCase
+ * 比如 toast 一个消息, 显示一个 loading, 等等
  */
-interface MVICommonUseCase : MVIBaseUseCase, MVICommonDialogUseCase {
+interface CommonUseCase : BaseUseCase, DialogUseCase {
 
     enum class TipType {
         Toast
@@ -127,15 +128,18 @@ interface MVICommonUseCase : MVIBaseUseCase, MVICommonDialogUseCase {
 
 }
 
-class MVICommonUseCaseImpl(
-    private val dialogUseCase: MVICommonDialogUseCase = MVICommonDialogUseCaseImpl(),
-) : MVIBaseUseCaseImpl(),
-    MVICommonUseCase,
-    MVICommonDialogUseCase by dialogUseCase {
+/**
+ * 不能设置为 open, 最好不要继承来用
+ */
+class CommonUseCaseImpl(
+    private val dialogUseCase: DialogUseCase = DialogUseCaseImpl(),
+) : BaseUseCaseImpl(),
+    CommonUseCase,
+    DialogUseCase by dialogUseCase {
 
     override val isLoadingOb: MutableStateFlow<Boolean> = MutableStateFlow(false)
 
-    override val tipEventOb: MutableSharedFlow<MVICommonUseCase.TipBean> = MutableSharedFlow(
+    override val tipEventOb: MutableSharedFlow<CommonUseCase.TipBean> = MutableSharedFlow(
         replay = 0,
         extraBufferCapacity = 1,
         onBufferOverflow = BufferOverflow.DROP_OLDEST
@@ -155,7 +159,7 @@ class MVICommonUseCaseImpl(
         isLoadingOb.value = false
     }
 
-    override fun tip(value: MVICommonUseCase.TipBean) {
+    override fun tip(value: CommonUseCase.TipBean) {
         tipEventOb.tryEmit(value)
     }
 
