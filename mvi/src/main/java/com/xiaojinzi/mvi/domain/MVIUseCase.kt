@@ -16,6 +16,7 @@ private class IntentMethodException(
 
 /**
  * 从 [BaseUseCase] 扩展了 [addIntent] 方法, 来实现 MVI 意图的唯一入口
+ * 不可以用代理的模式去使用, 比如 BaseUseCase by mviUseCase
  */
 interface MVIUseCase : BaseUseCase {
 
@@ -26,6 +27,9 @@ interface MVIUseCase : BaseUseCase {
 
 }
 
+/**
+ * 必须使用继承才可以生效
+ */
 open class MVIUseCaseImpl : BaseUseCaseImpl(), MVIUseCase {
 
     private val intentEvent: MutableSharedFlow<Any> = MutableSharedFlow(
@@ -37,6 +41,16 @@ open class MVIUseCaseImpl : BaseUseCaseImpl(), MVIUseCase {
     override fun addIntent(intent: Any) {
         intentEvent.tryEmit(
             value = intent,
+        )
+    }
+
+    protected open suspend fun onIntentProcess(
+        kCallable: KCallable<*>,
+        intent: Any,
+    ) {
+        kCallable.isAccessible = true
+        kCallable.callSuspend(
+            this@MVIUseCaseImpl, intent
         )
     }
 
@@ -80,19 +94,19 @@ open class MVIUseCaseImpl : BaseUseCaseImpl(), MVIUseCase {
 
         // 处理意图
         intentEvent
-            .onEach { intentEvent ->
-                println("准备处理意图：$intentEvent")
+            .onEach { intent ->
+                println("准备处理意图：$intent")
                 runCatching {
                     intentProcessMethodMap.get(
-                        key = intentEvent::class
+                        key = intent::class
                     )?.run {
-                        this.isAccessible = true
-                        this.callSuspend(
-                            this@MVIUseCaseImpl, intentEvent
+                        onIntentProcess(
+                            kCallable = this,
+                            intent = intent,
                         )
                     }
                 }
-                println("处理完毕意图：$intentEvent")
+                println("处理完毕意图：$intent")
             }
             .launchIn(scope = scope)
 

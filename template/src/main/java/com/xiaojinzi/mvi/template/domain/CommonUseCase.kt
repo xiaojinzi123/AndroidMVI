@@ -5,14 +5,18 @@ import androidx.annotation.Keep
 import androidx.annotation.StringRes
 import com.xiaojinzi.mvi.domain.BaseUseCase
 import com.xiaojinzi.mvi.domain.BaseUseCaseImpl
+import com.xiaojinzi.mvi.template.support.CommonBusinessException
 import com.xiaojinzi.support.annotation.PublishHotObservable
 import com.xiaojinzi.support.annotation.StateHotObservable
 import com.xiaojinzi.support.bean.StringItemDto
+import com.xiaojinzi.support.ktx.ErrorIgnoreContext
+import com.xiaojinzi.support.ktx.launchIgnoreError
 import com.xiaojinzi.support.ktx.toStringItemDto
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.first
 
 interface DialogUseCase : BaseUseCase {
 
@@ -44,6 +48,53 @@ interface DialogUseCase : BaseUseCase {
     @PublishHotObservable
     val confirmDialogResultEventOb: MutableSharedFlow<ConfirmDialogResultType>
 
+    suspend fun confirmDialog(
+        title: StringItemDto? = null,
+        content: StringItemDto,
+        negative: StringItemDto? = "取消".toStringItemDto(),
+        positive: StringItemDto? = "确认".toStringItemDto(),
+    ): ConfirmDialogResultType {
+        // 显示对话框
+        confirmDialogStateOb.emit(
+            value = ConfirmDialogModel(
+                title = title,
+                content = content,
+                negative = negative,
+                positive = positive,
+            )
+        )
+        return confirmDialogResultEventOb.first().apply {
+            confirmDialogStateOb.emit(
+                value = null,
+            )
+        }
+    }
+
+    suspend fun confirmDialogOrError(
+        title: StringItemDto? = null,
+        content: StringItemDto,
+        negative: StringItemDto? = "取消".toStringItemDto(),
+        positive: StringItemDto? = "确认".toStringItemDto(),
+    ) {
+        confirmDialog(
+            title = title,
+            content = content,
+            negative = negative,
+            positive = positive,
+        ).apply {
+            if (this != ConfirmDialogResultType.CONFIRM) {
+                throw CommonBusinessException()
+            }
+        }
+    }
+
+    fun postConfirmDialog(
+        title: StringItemDto? = null,
+        content: StringItemDto,
+        negative: StringItemDto? = null,
+        positive: StringItemDto? = null,
+    )
+
 }
 
 class DialogUseCaseImpl : BaseUseCaseImpl(), DialogUseCase {
@@ -57,6 +108,24 @@ class DialogUseCaseImpl : BaseUseCaseImpl(), DialogUseCase {
             extraBufferCapacity = 1,
             onBufferOverflow = BufferOverflow.DROP_OLDEST
         )
+
+    override fun postConfirmDialog(
+        title: StringItemDto?,
+        content: StringItemDto,
+        negative: StringItemDto?,
+        positive: StringItemDto?
+    ) {
+        scope.launchIgnoreError {
+            confirmDialogStateOb.emit(
+                value = DialogUseCase.ConfirmDialogModel(
+                    title = title,
+                    content = content,
+                    negative = negative,
+                    positive = positive,
+                )
+            )
+        }
+    }
 
 }
 

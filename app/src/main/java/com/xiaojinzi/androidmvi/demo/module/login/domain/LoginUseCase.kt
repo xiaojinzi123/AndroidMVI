@@ -6,6 +6,7 @@ import androidx.annotation.UiContext
 import com.xiaojinzi.mvi.anno.IntentProcess
 import com.xiaojinzi.mvi.template.domain.BusinessUseCase
 import com.xiaojinzi.mvi.template.domain.BusinessUseCaseImpl
+import com.xiaojinzi.support.ktx.toStringItemDto
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -43,17 +44,21 @@ class LoginUseCaseImpl(
         name.isNotBlank() && password.isNotBlank()
     }
 
+    @BusinessUseCase.AutoLoading
     @IntentProcess(LoginIntent.Login::class)
     private suspend fun login(
         intent: LoginIntent.Login,
     ) {
         delay(1000)
+        confirmDialogOrError(
+            content = "确定要登录吗?".toStringItemDto(),
+        )
         Toast.makeText(intent.context, "模拟登录成功", Toast.LENGTH_SHORT).show()
     }
 
     override suspend fun initData() {
         super.initData()
-        delay(2000)
+        delay(1000)
     }
 
 }

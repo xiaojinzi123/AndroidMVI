@@ -27,6 +27,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.xiaojinzi.androidmvi.demo.module.login.domain.LoginIntent
 import com.xiaojinzi.androidmvi.demo.ui.theme.AndroidMVITheme
 import com.xiaojinzi.mvi.template.domain.BusinessContentView
+import com.xiaojinzi.support.compose.StateBar
 
 class MainActivity : ComponentActivity() {
 
@@ -39,68 +40,69 @@ class MainActivity : ComponentActivity() {
             val password by vm.passwordStateOb.collectAsState(initial = "")
             val canSubmit by vm.canSubmitStateOb.collectAsState(initial = false)
             AndroidMVITheme {
-                // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background,
-                ) {
-                    BusinessContentView<LoginViewModel> {
-                        Column(
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .statusBarsPadding()
-                                .padding(horizontal = 38.dp, vertical = 0.dp)
-                        ) {
-
-                            Spacer(
+                StateBar {
+                    Surface(
+                        modifier = Modifier.fillMaxSize(),
+                        color = MaterialTheme.colorScheme.background,
+                    ) {
+                        BusinessContentView<LoginViewModel> {
+                            Column(
                                 modifier = Modifier
-                                    .height(height = 24.dp)
-                            )
+                                    .fillMaxSize()
+                                    .statusBarsPadding()
+                                    .padding(horizontal = 38.dp, vertical = 0.dp)
+                            ) {
 
-                            OutlinedTextField(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .wrapContentHeight(),
-                                value = name,
-                                onValueChange = {
-                                    vm.nameStateOb.value = it
-                                }
-                            )
+                                Spacer(
+                                    modifier = Modifier
+                                        .height(height = 24.dp)
+                                )
 
-                            Spacer(
-                                modifier = Modifier
-                                    .height(height = 24.dp)
-                            )
+                                OutlinedTextField(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .wrapContentHeight(),
+                                    value = name,
+                                    onValueChange = {
+                                        vm.nameStateOb.value = it
+                                    }
+                                )
 
-                            OutlinedTextField(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .wrapContentHeight(),
-                                value = password,
-                                keyboardOptions = KeyboardOptions.Default.copy(
-                                    keyboardType = KeyboardType.Password,
-                                ),
-                                onValueChange = {
-                                    vm.passwordStateOb.value = it
-                                }
-                            )
+                                Spacer(
+                                    modifier = Modifier
+                                        .height(height = 24.dp)
+                                )
 
-                            Button(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .wrapContentHeight()
-                                    .padding(horizontal = 0.dp, vertical = 26.dp),
-                                enabled = canSubmit,
-                                onClick = {
-                                    vm.addIntent(
-                                        intent = LoginIntent.Login(
-                                            context = context,
+                                OutlinedTextField(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .wrapContentHeight(),
+                                    value = password,
+                                    keyboardOptions = KeyboardOptions.Default.copy(
+                                        keyboardType = KeyboardType.Password,
+                                    ),
+                                    onValueChange = {
+                                        vm.passwordStateOb.value = it
+                                    }
+                                )
+
+                                Button(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .wrapContentHeight()
+                                        .padding(horizontal = 0.dp, vertical = 26.dp),
+                                    enabled = canSubmit,
+                                    onClick = {
+                                        vm.addIntent(
+                                            intent = LoginIntent.Login(
+                                                context = context,
+                                            )
                                         )
-                                    )
-                                }) {
-                                Text(text = "登录")
-                            }
+                                    }) {
+                                    Text(text = "登录")
+                                }
 
+                            }
                         }
                     }
                 }

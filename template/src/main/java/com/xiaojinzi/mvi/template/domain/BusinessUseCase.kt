@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -20,13 +21,16 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.xiaojinzi.mvi.domain.BaseUseCaseImpl
 import com.xiaojinzi.mvi.domain.MVIUseCase
 import com.xiaojinzi.mvi.domain.MVIUseCaseImpl
 import com.xiaojinzi.mvi.template.support.commonHandle
 import com.xiaojinzi.mvi.template.view.CommonAlertDialog
+import com.xiaojinzi.mvi.template.view.CommonErrorView
+import com.xiaojinzi.mvi.template.view.CommonInitDataView
+import com.xiaojinzi.mvi.template.view.CommonLoadingView
 import com.xiaojinzi.support.annotation.HotObservable
 import com.xiaojinzi.support.annotation.NoError
 import com.xiaojinzi.support.compose.util.clickableNoRipple
@@ -39,8 +43,15 @@ import com.xiaojinzi.support.ktx.timeAtLeast
 import com.xiaojinzi.support.ktx.tryFinishActivity
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlin.reflect.KCallable
 
 interface BusinessUseCase : MVIUseCase, CommonUseCase {
+
+    @Retention(value = AnnotationRetention.RUNTIME)
+    @Target(
+        AnnotationTarget.FUNCTION,
+    )
+    annotation class AutoLoading
 
     @Keep
     enum class ViewState {
@@ -81,14 +92,28 @@ interface BusinessUseCase : MVIUseCase, CommonUseCase {
 
 open class BusinessUseCaseImpl(
     private val commonUseCase: CommonUseCase = CommonUseCaseImpl(),
-    private val mviUseCase: MVIUseCase = MVIUseCaseImpl(),
-) : BaseUseCaseImpl(),
+) : MVIUseCaseImpl(),
     BusinessUseCase,
-    MVIUseCase by mviUseCase,
     CommonUseCase by commonUseCase {
 
     override val pageInitStateObservableDto =
         MutableSharedStateFlow(initValue = BusinessUseCase.ViewState.STATE_INIT)
+
+    final override suspend fun onIntentProcess(kCallable: KCallable<*>, intent: Any) {
+        // 判断是否有注解 AutoLoading
+        val isAutoLoading = kCallable.annotations.any {
+            it is BusinessUseCase.AutoLoading
+        }
+        if (isAutoLoading) {
+            showLoading()
+        }
+        kotlin.runCatching {
+            super.onIntentProcess(kCallable, intent)
+        }
+        if (isAutoLoading) {
+            hideLoading()
+        }
+    }
 
     @Throws(Exception::class)
     override suspend fun initData() {
@@ -182,6 +207,15 @@ inline fun <reified VM : ViewModel> BusinessContentView(
     var isLoading by remember {
         mutableStateOf(value = false)
     }
+    if (isLoading) {
+        CommonLoadingView(
+            modifier = Modifier
+                .size(60.dp)
+                .nothing(),
+        ) {
+            isLoading = false
+        }
+    }
     // 对 ui 控制的一些监听
     LaunchedEffect(key1 = Unit) {
         when (vm) {
@@ -215,7 +249,11 @@ inline fun <reified VM : ViewModel> BusinessContentView(
         if (needInit) {
             when (viewState) {
                 BusinessUseCase.ViewState.STATE_INIT, BusinessUseCase.ViewState.STATE_LOADING -> {
-
+                    CommonInitDataView(
+                        modifier = Modifier
+                            .size(60.dp)
+                            .nothing(),
+                    )
                 }
 
                 BusinessUseCase.ViewState.STATE_ERROR -> {
@@ -228,6 +266,11 @@ inline fun <reified VM : ViewModel> BusinessContentView(
                             .nothing(),
                         contentAlignment = Alignment.Center,
                     ) {
+                        CommonErrorView(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .nothing(),
+                        )
                     }
                 }
 

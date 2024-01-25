@@ -28,6 +28,8 @@ dependencyResolutionManagement {
             library("compose-foundation-android", "androidx.compose.foundation", "foundation-layout-android").versionRef("compose")
             version("lifecycle", "2.6.2")
             library("lifecycle-viewmodel-compose", "androidx.lifecycle", "lifecycle-viewmodel-compose").versionRef("lifecycle")
+            version("lottie", "6.2.0")
+            library("lottie-compose", "com.airbnb.android", "lottie-compose").versionRef("lottie")
         }
     }
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)

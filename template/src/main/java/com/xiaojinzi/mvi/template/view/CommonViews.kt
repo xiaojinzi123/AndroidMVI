@@ -4,16 +4,22 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -28,6 +34,11 @@ import androidx.compose.ui.window.DialogProperties
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.constraintlayout.compose.Visibility
+import com.airbnb.lottie.compose.LottieAnimation
+import com.airbnb.lottie.compose.LottieCompositionSpec
+import com.airbnb.lottie.compose.LottieConstants
+import com.airbnb.lottie.compose.rememberLottieComposition
+import com.xiaojinzi.mvi.template.R
 import com.xiaojinzi.support.bean.StringItemDto
 import com.xiaojinzi.support.compose.util.circleClip
 import com.xiaojinzi.support.compose.util.contentWithComposable
@@ -179,5 +190,65 @@ fun CommonAlertDialog(
 
         }
 
+    }
+}
+
+@Composable
+fun CommonInitDataView(
+    modifier: Modifier = Modifier,
+) {
+    val composition by rememberLottieComposition(
+        LottieCompositionSpec.RawRes(R.raw.res_loading1)
+    )
+    LottieAnimation(
+        modifier = modifier,
+        composition = composition,
+        iterations = LottieConstants.IterateForever,
+    )
+}
+
+@Composable
+fun CommonErrorView(
+    modifier: Modifier = Modifier,
+) {
+    Column(
+        modifier = modifier,
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        val composition by rememberLottieComposition(
+            LottieCompositionSpec.RawRes(R.raw.res_error1)
+        )
+        LottieAnimation(
+            modifier = Modifier
+                .width(200.dp)
+                .aspectRatio(ratio = 1f)
+                .nothing(),
+            composition = composition,
+            iterations = LottieConstants.IterateForever,
+        )
+        Spacer(modifier = Modifier.height(10.dp))
+        Text(text = "页面开小差了, 点击空白处重试")
+    }
+}
+
+@Composable
+fun CommonLoadingView(
+    modifier: Modifier = Modifier,
+    onDismissClick: () -> Unit,
+) {
+    Dialog(
+        onDismissRequest = {
+            onDismissClick.invoke()
+        },
+    ) {
+        val composition by rememberLottieComposition(
+            LottieCompositionSpec.RawRes(R.raw.res_loading1)
+        )
+        LottieAnimation(
+            modifier = modifier,
+            composition = composition,
+            iterations = LottieConstants.IterateForever,
+        )
     }
 }

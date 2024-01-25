@@ -7,6 +7,15 @@ import com.xiaojinzi.support.init.AppInstance.app
 import com.xiaojinzi.support.ktx.contentWithContext
 import com.xiaojinzi.support.ktx.toStringItemDto
 
+/**
+ * 表示业务异常
+ */
+open class CommonBusinessException(
+    val messageRsd: Int? = null,
+    message: String? = null,
+    cause: Throwable? = null,
+) : RuntimeException(message, cause)
+
 fun Throwable.getCommonHandleMessage(
     defStringRsd: Int? = null,
 ): StringItemDto? {
