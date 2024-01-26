@@ -1,0 +1,1 @@
+/Users/hhkj/Documents/code/android/github/AndroidMVI/buildSrc/build/classes/kotlin/main/Libs.class:/Users/hhkj/Documents/code/android/github/AndroidMVI/buildSrc/build/classes/kotlin/main/Versions.class

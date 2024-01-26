@@ -45,15 +45,15 @@ dependencies {
 
     implementation(kotlin("reflect"))
 
-    api(libs.android.support.ktx)
-    api(libs.android.support.annotation)
-    api(libs.android.support.compose)
-    api(libs.compose.runtime)
-    api(libs.compose.runtime.android)
-    api(libs.compose.ui.android)
-    api(libs.compose.foundation.android)
-    api(libs.lifecycle.viewmodel.compose)
-    api(libs.core)
-    api(libs.appcompat)
+    api(Libs.xiaojinzi_android_support_ktx)
+    api(Libs.xiaojinzi_android_support_annotation)
+    api(Libs.xiaojinzi_android_support_compose)
+    api(Libs.compose_runtime)
+    api(Libs.compose_runtime_android)
+    api(Libs.compose_ui_android)
+    api(Libs.compose_foundation_android)
+    api(Libs.lifecycle_viewmodel_compose)
+    api(Libs.androidx_core)
+    api(Libs.androidx_appcompat)
 
 }
