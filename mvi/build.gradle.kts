@@ -1,7 +1,6 @@
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
-    // id("common-lib-plugin")
 }
 
 android {
@@ -36,7 +35,6 @@ android {
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.1"
-        kotlinCompilerVersion = "1.9.0"
     }
 }
 

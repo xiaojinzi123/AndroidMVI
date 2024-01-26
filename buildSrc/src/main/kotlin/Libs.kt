@@ -5,6 +5,7 @@ object Versions {
     const val compose = "1.5.4"
     const val lifecycle = "2.6.2"
     const val lottie = "6.3.0"
+    const val kcomponent = "v1.0.8-rc5"
 
 }
 
@@ -21,5 +22,8 @@ object Libs {
     const val compose_foundation_android = "androidx.compose.foundation:foundation-layout-android:${Versions.compose}"
     const val lifecycle_viewmodel_compose = "androidx.lifecycle:lifecycle-viewmodel-compose:${Versions.lifecycle}"
     const val lottie_compose = "com.airbnb.android:lottie-compose:${Versions.lottie}"
+
+    // kcomponent
+    const val kcomponent_core = "com.github.xiaojinzi123.KComponent:kcomponent:${Versions.kcomponent}"
 
 }
