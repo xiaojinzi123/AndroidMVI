@@ -41,6 +41,19 @@ android {
 
 dependencies {
     api(project(":mvi"))
+
     implementation(kotlin("reflect"))
+    api(Libs.xiaojinzi_android_support_ktx)
+    api(Libs.xiaojinzi_android_support_annotation)
+    api(Libs.xiaojinzi_android_support_compose)
+    api(Libs.compose_runtime)
+    api(Libs.compose_runtime_android)
+    api(Libs.compose_ui_android)
+    api(Libs.compose_foundation_android)
+    api(Libs.lifecycle_viewmodel_compose)
+    api(Libs.androidx_core)
+    api(Libs.androidx_appcompat)
+
     api(Libs.lottie_compose)
+
 }

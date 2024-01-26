@@ -1,9 +1,8 @@
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
+    // id("common-lib-plugin")
 }
-
-apply(from = File(rootProject.projectDir, "lib.gradle.kts").path)
 
 android {
     namespace = "com.xiaojinzi.mvi"
@@ -44,7 +43,6 @@ android {
 dependencies {
 
     implementation(kotlin("reflect"))
-
     api(Libs.xiaojinzi_android_support_ktx)
     api(Libs.xiaojinzi_android_support_annotation)
     api(Libs.xiaojinzi_android_support_compose)
