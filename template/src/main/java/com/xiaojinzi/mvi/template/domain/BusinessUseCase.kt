@@ -99,6 +99,9 @@ open class BusinessUseCaseImpl(
     override val pageInitStateObservableDto =
         MutableSharedStateFlow(initValue = BusinessUseCase.ViewState.STATE_INIT)
 
+    /**
+     * 自定义拦截处理, 判断是否有注解 AutoLoading 注解, 然后执行前后加上 loading 的显示和隐藏
+     */
     final override suspend fun onIntentProcess(kCallable: KCallable<*>, intent: Any) {
         // 判断是否有注解 AutoLoading
         val isAutoLoading = kCallable.annotations.any {

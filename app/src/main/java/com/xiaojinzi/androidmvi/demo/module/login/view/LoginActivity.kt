@@ -19,6 +19,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
@@ -28,6 +29,7 @@ import com.xiaojinzi.androidmvi.demo.module.login.domain.LoginIntent
 import com.xiaojinzi.androidmvi.demo.ui.theme.AndroidMVITheme
 import com.xiaojinzi.mvi.template.domain.BusinessContentView
 import com.xiaojinzi.support.compose.StateBar
+import com.xiaojinzi.support.ktx.nothing
 
 class MainActivity : ComponentActivity() {
 
@@ -37,7 +39,9 @@ class MainActivity : ComponentActivity() {
             val context = LocalContext.current
             val vm: LoginViewModel = viewModel()
             val name by vm.nameStateOb.collectAsState(initial = "")
+            val isNameError by vm.isNameErrorStateOb.collectAsState(initial = false)
             val password by vm.passwordStateOb.collectAsState(initial = "")
+            val isPasswordError by vm.isPasswordErrorStateOb.collectAsState(initial = false)
             val canSubmit by vm.canSubmitStateOb.collectAsState(initial = false)
             AndroidMVITheme {
                 StateBar {
@@ -51,11 +55,14 @@ class MainActivity : ComponentActivity() {
                                     .fillMaxSize()
                                     .statusBarsPadding()
                                     .padding(horizontal = 38.dp, vertical = 0.dp)
+                                    .nothing(),
+                                horizontalAlignment = Alignment.CenterHorizontally,
                             ) {
 
                                 Spacer(
                                     modifier = Modifier
-                                        .height(height = 24.dp)
+                                        .height(height = 180.dp)
+                                        .nothing()
                                 )
 
                                 OutlinedTextField(
@@ -63,9 +70,13 @@ class MainActivity : ComponentActivity() {
                                         .fillMaxWidth()
                                         .wrapContentHeight(),
                                     value = name,
+                                    isError = isNameError,
                                     onValueChange = {
-                                        vm.nameStateOb.value = it
-                                    }
+                                        vm.nameStateOb.value = it.trim()
+                                    },
+                                    placeholder = {
+                                        Text(text = "请输入用户名, 至少 6 位")
+                                    },
                                 )
 
                                 Spacer(
@@ -78,12 +89,16 @@ class MainActivity : ComponentActivity() {
                                         .fillMaxWidth()
                                         .wrapContentHeight(),
                                     value = password,
+                                    isError = isPasswordError,
                                     keyboardOptions = KeyboardOptions.Default.copy(
                                         keyboardType = KeyboardType.Password,
                                     ),
                                     onValueChange = {
-                                        vm.passwordStateOb.value = it
-                                    }
+                                        vm.passwordStateOb.value = it.trim()
+                                    },
+                                    placeholder = {
+                                        Text(text = "请输入密码")
+                                    },
                                 )
 
                                 Button(
