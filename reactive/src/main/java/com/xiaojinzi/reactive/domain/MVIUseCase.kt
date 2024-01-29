@@ -200,9 +200,13 @@ open class MVIUseCaseImpl : BaseUseCaseImpl(), MVIUseCase {
                     }
                 }
                 intentProcessResultEvent.add(
-                    value = IntentProcessResult(
+                    value = intentProcessResult.exceptionOrNull()?.let {
+                        IntentProcessResult.Fail(
+                            intent = intent,
+                            error = it,
+                        )
+                    } ?: IntentProcessResult.Success(
                         intent = intent,
-                        result = intentProcessResult.isSuccess,
                     )
                 )
                 println("处理完毕意图：$intent")
