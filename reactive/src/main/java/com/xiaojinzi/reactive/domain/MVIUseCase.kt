@@ -49,6 +49,15 @@ interface IntentAddResult {
     @Throws(Exception::class)
     suspend fun await()
 
+    /**
+     * 等待完成
+     */
+    suspend fun awaitIgnoreError() {
+        runCatching {
+            await()
+        }
+    }
+
 }
 
 /**
