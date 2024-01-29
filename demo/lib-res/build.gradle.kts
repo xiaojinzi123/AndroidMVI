@@ -1,5 +1,5 @@
 plugins {
-    id("commonModulePlugin")
+    id("commonLibPlugin")
 }
 
 android {
@@ -7,4 +7,8 @@ android {
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_17.toString()
     }
+}
+
+dependencies {
+    api(libs.xiaojinzi.android.support.annotation)
 }

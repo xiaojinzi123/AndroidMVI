@@ -1,5 +1,6 @@
 package com.xiaojinzi.mvi.domain
 
+import androidx.annotation.CallSuper
 import com.xiaojinzi.mvi.anno.IntentProcess
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.launchIn
@@ -44,6 +45,7 @@ open class MVIUseCaseImpl : BaseUseCaseImpl(), MVIUseCase {
         )
     }
 
+    @CallSuper
     protected open suspend fun onIntentProcess(
         kCallable: KCallable<*>,
         intent: Any,

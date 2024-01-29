@@ -15,6 +15,10 @@ dependencies {
 
 gradlePlugin {
     plugins {
+        register("commonLibPlugin") {
+            id = "commonLibPlugin"
+            implementationClass = "CommonLibPlugin"
+        }
         register("commonModulePlugin") {
             id = "commonModulePlugin"
             implementationClass = "CommonModulePlugin"

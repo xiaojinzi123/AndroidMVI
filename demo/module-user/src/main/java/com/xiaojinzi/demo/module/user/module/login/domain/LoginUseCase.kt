@@ -3,6 +3,7 @@ package com.xiaojinzi.demo.module.user.module.login.domain
 import android.content.Context
 import android.widget.Toast
 import androidx.annotation.UiContext
+import com.xiaojinzi.demo.module.base.support.AppServices
 import com.xiaojinzi.mvi.anno.IntentProcess
 import com.xiaojinzi.mvi.template.domain.BusinessUseCase
 import com.xiaojinzi.mvi.template.domain.BusinessUseCaseImpl
@@ -72,11 +73,15 @@ class LoginUseCaseImpl(
         delay(1000)
         val name = nameStateOb.first()
         val password = passwordStateOb.first()
-        if("admin" == name && "123" == password) {
-            toast("登录成功")
-        } else {
-            toast("账号或者密码错误")
-        }
+        AppServices
+            .userSpi
+            ?.login(
+                name = name,
+                password = password,
+            )
+        toast(
+            content = "登录成功, 用户名: $name, 密码: $password",
+        )
     }
 
     override suspend fun initData() {

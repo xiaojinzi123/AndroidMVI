@@ -10,6 +10,7 @@ android {
 }
 
 dependencies {
+    implementation(kotlin("reflect"))
     api(project(":mvi"))
     api(libs.lottie.compose)
 }

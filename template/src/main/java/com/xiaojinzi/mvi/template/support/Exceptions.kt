@@ -26,6 +26,11 @@ fun Throwable.getCommonHandleMessage(
 
         when {
 
+            currentThrowable is CommonBusinessException -> {
+                return currentThrowable.messageRsd?.toStringItemDto()
+                    ?: currentThrowable.message?.toStringItemDto()
+            }
+
             currentThrowable is kotlinx.coroutines.CancellationException -> {
                 return null
             } // ignore
@@ -49,7 +54,7 @@ fun Throwable.getCommonHandleMessage(
 
     } while (true)
 
-    return "未知错误".toStringItemDto()
+    return defStringRsd?.toStringItemDto()
 
 }
 
@@ -62,7 +67,9 @@ fun Throwable.commonHandle(
 ) {
     this.getCommonHandleMessage(
         defStringRsd = defStringRsd,
-    )?.run {
+    ).apply {
+        println("123123")
+    }?.run {
         Toast.makeText(
             context,
             this.contentWithContext(),

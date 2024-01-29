@@ -18,6 +18,7 @@ dependencies {
 
     api(project(":mvi"))
     api(project(":template"))
+    api(project(":demo:lib-res"))
 
     api(libs.kcomponent.core)
     ksp(libs.kcomponent.compiler)

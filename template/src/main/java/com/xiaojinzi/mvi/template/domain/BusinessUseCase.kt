@@ -1,6 +1,7 @@
 package com.xiaojinzi.mvi.template.domain
 
 import android.widget.Toast
+import androidx.annotation.CallSuper
 import androidx.annotation.Keep
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
@@ -99,9 +100,16 @@ open class BusinessUseCaseImpl(
     override val pageInitStateObservableDto =
         MutableSharedStateFlow(initValue = BusinessUseCase.ViewState.STATE_INIT)
 
+    protected fun onIntentProcessError(
+        intent: Any, error: Throwable,
+    ) {
+        error.commonHandle()
+    }
+
     /**
      * 自定义拦截处理, 判断是否有注解 AutoLoading 注解, 然后执行前后加上 loading 的显示和隐藏
      */
+    @CallSuper
     final override suspend fun onIntentProcess(kCallable: KCallable<*>, intent: Any) {
         // 判断是否有注解 AutoLoading
         val isAutoLoading = kCallable.annotations.any {
@@ -111,7 +119,17 @@ open class BusinessUseCaseImpl(
             showLoading()
         }
         kotlin.runCatching {
-            super.onIntentProcess(kCallable, intent)
+            super.onIntentProcess(
+                kCallable = kCallable,
+                intent = intent,
+            )
+        }.apply {
+            this.exceptionOrNull()?.let {
+                onIntentProcessError(
+                    intent = intent,
+                    error = it,
+                )
+            }
         }
         if (isAutoLoading) {
             hideLoading()
