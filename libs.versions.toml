@@ -1,7 +1,7 @@
 [versions]
 compileSdk = "34"
 targetSdk = "34"
-minSdk = "24"
+minSdk = "21"
 xiaojinzi_android_support = "v1.0-beta208"
 compose = "1.5.4"
 lifecycle = "2.6.2"
@@ -30,10 +30,12 @@ lifecycle_viewmodel_compose = { group = "androidx.lifecycle", name = "lifecycle-
 lottie_compose = { group = "com.airbnb.android", name = "lottie-compose", version.ref = "lottie" }
 kcomponent_core = { group = "com.github.xiaojinzi123.KComponent", name = "kcomponent", version.ref = "kcomponent" }
 kcomponent_compiler = { group = "com.github.xiaojinzi123.KComponent", name = "kcomponent-compiler", version.ref = "kcomponent" }
+kcomponent_gradleplugin = { group = "com.github.xiaojinzi123.KComponent", name = "kcomponent-plugin", version.ref = "kcomponent" }
 
 android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "agp" }
 kotlin-gradlePlugin-api = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin-api", version.ref = "kotlin" }
 kotlin-gradlePlugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
+ksp-gradlePlugin = {group = "com.google.devtools.ksp", name = "symbol-processing-gradle-plugin", version.ref = "ksp" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-test-ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidx-test-ext-junit" }
 espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espresso-core" }

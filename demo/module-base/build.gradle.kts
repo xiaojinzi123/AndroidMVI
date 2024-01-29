@@ -6,8 +6,12 @@ plugins {
 android {
     namespace = "com.xiaojinzi.demo.module.base"
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = JavaVersion.VERSION_17.toString()
     }
+}
+
+ksp {
+    arg("ModuleName", "module_base")
 }
 
 dependencies {

@@ -1,11 +1,12 @@
 plugins {
     id("com.android.application")
+    id("com.xiaojinzi.kcomponent.plugin")
     id("org.jetbrains.kotlin.android")
 }
 
 android {
     namespace = "com.xiaojinzi.mvi.demo"
-
+    compileSdk = libs.versions.compileSdk.get().toInt()
     defaultConfig {
         applicationId = "com.xiaojinzi.mvi.demo"
         minSdk = libs.versions.minSdk.get().toInt()
@@ -25,6 +26,10 @@ android {
                 "proguard-rules.pro"
             )
         }
+    }
+
+    buildFeatures {
+        compose = true
     }
 
     compileOptions {
@@ -51,4 +56,6 @@ android {
 dependencies {
     implementation(project(":template"))
     implementation(project(":mvi"))
+    implementation(project(":demo:module-base"))
+    implementation(project(":demo:module-user"))
 }
