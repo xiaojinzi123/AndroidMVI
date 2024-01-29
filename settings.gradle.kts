@@ -29,3 +29,4 @@ rootProject.name = "AndroidMVI"
 include(":demo:app")
 include(":mvi")
 include(":template")
+include(":demo:module-base")
