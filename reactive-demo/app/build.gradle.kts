@@ -54,8 +54,8 @@ android {
 }
 
 dependencies {
-    implementation(project(":template"))
-    implementation(project(":mvi"))
-    implementation(project(":demo:module-base"))
-    implementation(project(":demo:module-user"))
+    implementation(project(":reactive-template"))
+    implementation(project(":reactive"))
+    implementation(project(":reactive-demo:module-base"))
+    implementation(project(":reactive-demo:module-user"))
 }

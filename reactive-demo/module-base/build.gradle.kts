@@ -16,9 +16,9 @@ ksp {
 
 dependencies {
 
-    api(project(":mvi"))
-    api(project(":template"))
-    api(project(":demo:lib-res"))
+    api(project(":reactive"))
+    api(project(":reactive-template"))
+    api(project(":reactive-demo:lib-res"))
 
     api(libs.kcomponent.core)
     ksp(libs.kcomponent.compiler)

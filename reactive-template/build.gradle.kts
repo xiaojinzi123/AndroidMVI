@@ -11,6 +11,6 @@ android {
 
 dependencies {
     implementation(kotlin("reflect"))
-    api(project(":mvi"))
+    api(project(":reactive"))
     api(libs.lottie.compose)
 }

@@ -1,4 +1,3 @@
-import com.android.build.gradle.LibraryExtension
 import com.google.devtools.ksp.gradle.KspExtension
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
@@ -23,7 +22,7 @@ class CommonDemoModulePlugin : CommonModulePlugin() {
         }
         with(project) {
             dependencies.apply {
-                add("api", project(":demo:module-base"))
+                add("api", project(":reactive-demo:module-base"))
                 add("ksp", libs.findLibrary("kcomponent-compiler").get().get().toString())
             }
         }
