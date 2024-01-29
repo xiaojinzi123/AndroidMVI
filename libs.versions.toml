@@ -1,4 +1,7 @@
 [versions]
+compileSdk = "34"
+targetSdk = "34"
+minSdk = "24"
 xiaojinzi_android_support = "v1.0-beta208"
 compose = "1.5.4"
 lifecycle = "2.6.2"

@@ -4,7 +4,7 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
 
-class CommonModulePlugin : Plugin<Project> {
+open class CommonModulePlugin : Plugin<Project> {
     override fun apply(project: Project) {
         with(project) {
             plugins.apply {
@@ -12,9 +12,9 @@ class CommonModulePlugin : Plugin<Project> {
                 apply("org.jetbrains.kotlin.android")
             }
             extensions.configure<LibraryExtension> {
-                compileSdk = 34
+                compileSdk = libs.findVersion("compileSdk").get().toString().toInt()
                 defaultConfig {
-                    minSdk = 24
+                    minSdk = libs.findVersion("minSdk").get().toString().toInt()
                     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
                     consumerProguardFiles("consumer-rules.pro")
                 }
@@ -41,4 +41,5 @@ class CommonModulePlugin : Plugin<Project> {
             }
         }
     }
+
 }
