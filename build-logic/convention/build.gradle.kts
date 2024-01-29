@@ -15,5 +15,9 @@ gradlePlugin {
             id = "commonModulePlugin"
             implementationClass = "CommonModulePlugin"
         }
+        register("commonDemoModulePlugin") {
+            id = "commonDemoModulePlugin"
+            implementationClass = "CommonDemoModulePlugin"
+        }
     }
 }
