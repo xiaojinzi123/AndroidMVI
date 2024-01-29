@@ -1,4 +1,4 @@
-package com.xiaojinzi.mvi.template.view
+package com.xiaojinzi.reactive.template.view
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -11,9 +11,7 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
@@ -38,7 +36,7 @@ import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.rememberLottieComposition
-import com.xiaojinzi.mvi.template.R
+import com.xiaojinzi.reactive.template.R
 import com.xiaojinzi.support.bean.StringItemDto
 import com.xiaojinzi.support.compose.util.circleClip
 import com.xiaojinzi.support.compose.util.contentWithComposable

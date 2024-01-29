@@ -25,7 +25,7 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "AndroidMVI"
+rootProject.name = "AndroidReactive"
 include(":reactive-demo:app")
 include(":reactive")
 include(":reactive-template")

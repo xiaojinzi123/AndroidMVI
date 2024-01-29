@@ -21,7 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.xiaojinzi.demo.module.base.view.compose.AppbarNormalM3
 import com.xiaojinzi.demo.module.user.module.login.domain.LoginIntent
-import com.xiaojinzi.mvi.template.domain.BusinessContentView
+import com.xiaojinzi.reactive.template.domain.BusinessContentView
 import com.xiaojinzi.support.compose.util.clickableNoRipple
 import com.xiaojinzi.support.ktx.nothing
 import com.xiaojinzi.support.ktx.toStringItemDto
@@ -121,7 +121,7 @@ private fun LoginView(
                 enabled = previewDefault?.canSubmit?: canSubmit,
                 onClick = {
                     vm.addIntent(
-                        intent = LoginIntent.Login(
+                        intent = LoginIntent.Submit(
                             context = context,
                         )
                     )

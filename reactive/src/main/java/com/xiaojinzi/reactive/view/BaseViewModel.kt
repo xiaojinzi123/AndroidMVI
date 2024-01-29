@@ -1,8 +1,8 @@
-package com.xiaojinzi.mvi.view
+package com.xiaojinzi.reactive.view
 
 import androidx.annotation.CallSuper
 import androidx.lifecycle.ViewModel
-import com.xiaojinzi.mvi.domain.BaseUseCase
+import com.xiaojinzi.reactive.domain.BaseUseCase
 
 /**
  * 每一个 [ViewModel] 的基类. 定义了一些公用的方法

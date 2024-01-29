@@ -1,4 +1,4 @@
-package com.xiaojinzi.mvi.demo
+package com.xiaojinzi.reactive.demo
 
 import android.app.Application
 import com.xiaojinzi.component.anno.ModuleAppAnno

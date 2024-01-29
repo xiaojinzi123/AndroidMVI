@@ -5,10 +5,10 @@ plugins {
 }
 
 android {
-    namespace = "com.xiaojinzi.mvi.demo"
+    namespace = "com.xiaojinzi.reactive.demo"
     compileSdk = libs.versions.compileSdk.get().toInt()
     defaultConfig {
-        applicationId = "com.xiaojinzi.mvi.demo"
+        applicationId = "com.xiaojinzi.reactive.demo"
         minSdk = libs.versions.minSdk.get().toInt()
         targetSdk = libs.versions.targetSdk.get().toInt()
         versionCode = 1

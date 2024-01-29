@@ -1,4 +1,4 @@
-package com.xiaojinzi.mvi.template.domain
+package com.xiaojinzi.reactive.template.domain
 
 import android.widget.Toast
 import androidx.annotation.CallSuper
@@ -25,13 +25,13 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.xiaojinzi.mvi.domain.MVIUseCase
-import com.xiaojinzi.mvi.domain.MVIUseCaseImpl
-import com.xiaojinzi.mvi.template.support.commonHandle
-import com.xiaojinzi.mvi.template.view.CommonAlertDialog
-import com.xiaojinzi.mvi.template.view.CommonErrorView
-import com.xiaojinzi.mvi.template.view.CommonInitDataView
-import com.xiaojinzi.mvi.template.view.CommonLoadingView
+import com.xiaojinzi.reactive.domain.MVIUseCase
+import com.xiaojinzi.reactive.domain.MVIUseCaseImpl
+import com.xiaojinzi.reactive.template.support.commonHandle
+import com.xiaojinzi.reactive.template.view.CommonAlertDialog
+import com.xiaojinzi.reactive.template.view.CommonErrorView
+import com.xiaojinzi.reactive.template.view.CommonInitDataView
+import com.xiaojinzi.reactive.template.view.CommonLoadingView
 import com.xiaojinzi.support.annotation.HotObservable
 import com.xiaojinzi.support.annotation.NoError
 import com.xiaojinzi.support.compose.util.clickableNoRipple

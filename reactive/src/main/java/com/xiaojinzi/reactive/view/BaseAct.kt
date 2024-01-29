@@ -1,4 +1,4 @@
-package com.xiaojinzi.mvi.view
+package com.xiaojinzi.reactive.view
 
 import android.os.Bundle
 import androidx.annotation.CallSuper

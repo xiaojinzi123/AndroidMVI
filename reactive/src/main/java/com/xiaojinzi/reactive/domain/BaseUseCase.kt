@@ -1,4 +1,4 @@
-package com.xiaojinzi.mvi.domain
+package com.xiaojinzi.reactive.domain
 
 import androidx.annotation.CallSuper
 import kotlinx.coroutines.MainScope

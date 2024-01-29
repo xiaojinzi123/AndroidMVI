@@ -1,4 +1,4 @@
-package com.xiaojinzi.mvi.anno
+package com.xiaojinzi.reactive.anno
 
 import kotlin.reflect.KClass
 

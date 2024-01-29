@@ -1,10 +1,9 @@
-package com.xiaojinzi.mvi.demo
+package com.xiaojinzi.reactive.demo
 
 import android.app.Application
 import android.content.Context
 import com.xiaojinzi.component.Component
 import com.xiaojinzi.component.Config
-import com.xiaojinzi.mvi.demo.BuildConfig
 import com.xiaojinzi.support.init.AppInstance
 
 class App: Application() {

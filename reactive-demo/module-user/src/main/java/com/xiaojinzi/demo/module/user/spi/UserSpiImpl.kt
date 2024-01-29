@@ -3,7 +3,7 @@ package com.xiaojinzi.demo.module.user.spi
 import com.xiaojinzi.component.anno.ServiceAnno
 import com.xiaojinzi.demo.lib.res.user.UserInfoDto
 import com.xiaojinzi.demo.module.base.spi.UserSpi
-import com.xiaojinzi.mvi.template.support.CommonBusinessException
+import com.xiaojinzi.reactive.template.support.CommonBusinessException
 import com.xiaojinzi.support.ktx.MutableSharedStateFlow
 
 @ServiceAnno(UserSpi::class)

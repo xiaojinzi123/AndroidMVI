@@ -1,4 +1,4 @@
-package com.xiaojinzi.mvi.template.support
+package com.xiaojinzi.reactive.template.support
 
 import android.content.Context
 import android.widget.Toast

@@ -3,7 +3,7 @@ plugins {
 }
 
 android {
-    namespace = "com.xiaojinzi.mvi.template"
+    namespace = "com.xiaojinzi.reactive.template"
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_17.toString()
     }

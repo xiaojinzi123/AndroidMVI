@@ -1,15 +1,14 @@
-package com.xiaojinzi.mvi.template.domain
+package com.xiaojinzi.reactive.template.domain
 
 import android.widget.Toast
 import androidx.annotation.Keep
 import androidx.annotation.StringRes
-import com.xiaojinzi.mvi.domain.BaseUseCase
-import com.xiaojinzi.mvi.domain.BaseUseCaseImpl
-import com.xiaojinzi.mvi.template.support.CommonBusinessException
+import com.xiaojinzi.reactive.domain.BaseUseCase
+import com.xiaojinzi.reactive.domain.BaseUseCaseImpl
+import com.xiaojinzi.reactive.template.support.CommonBusinessException
 import com.xiaojinzi.support.annotation.PublishHotObservable
 import com.xiaojinzi.support.annotation.StateHotObservable
 import com.xiaojinzi.support.bean.StringItemDto
-import com.xiaojinzi.support.ktx.ErrorIgnoreContext
 import com.xiaojinzi.support.ktx.launchIgnoreError
 import com.xiaojinzi.support.ktx.toStringItemDto
 import kotlinx.coroutines.channels.BufferOverflow
