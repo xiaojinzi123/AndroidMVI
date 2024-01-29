@@ -1,4 +1,4 @@
-package com.xiaojinzi.androidmvi.demo.ui.theme
+package com.xiaojinzi.demo.module.base.ui.theme
 
 import android.app.Activity
 import android.os.Build

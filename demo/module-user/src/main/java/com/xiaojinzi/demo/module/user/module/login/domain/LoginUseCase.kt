@@ -1,4 +1,4 @@
-package com.xiaojinzi.androidmvi.demo.module.login.domain
+package com.xiaojinzi.demo.module.user.module.login.domain
 
 import android.content.Context
 import android.widget.Toast
@@ -12,6 +12,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 
 sealed class LoginIntent {
@@ -69,10 +70,13 @@ class LoginUseCaseImpl(
         intent: LoginIntent.Login,
     ) {
         delay(1000)
-        confirmDialogOrError(
-            content = "确定要登录吗?".toStringItemDto(),
-        )
-        Toast.makeText(intent.context, "模拟登录成功", Toast.LENGTH_SHORT).show()
+        val name = nameStateOb.first()
+        val password = passwordStateOb.first()
+        if("admin" == name && "123" == password) {
+            toast("登录成功")
+        } else {
+            toast("账号或者密码错误")
+        }
     }
 
     override suspend fun initData() {

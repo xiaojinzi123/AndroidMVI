@@ -3,7 +3,7 @@ plugins {
 }
 
 android {
-    namespace = "com.xiaojinzi.demo.module.base"
+    namespace = "com.xiaojinzi.demo.module.user"
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_17.toString()
     }

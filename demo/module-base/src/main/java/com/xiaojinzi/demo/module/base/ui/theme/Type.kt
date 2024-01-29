@@ -1,4 +1,4 @@
-package com.xiaojinzi.androidmvi.demo.ui.theme
+package com.xiaojinzi.demo.module.base.ui.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle

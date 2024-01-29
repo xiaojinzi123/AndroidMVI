@@ -21,7 +21,7 @@ import com.xiaojinzi.mvi.domain.BaseUseCase
  * @see BaseFrag
  */
 abstract class
-MVIBaseViewModel : ViewModel() {
+BaseViewModel : ViewModel() {
 
     @CallSuper
     override fun onCleared() {
