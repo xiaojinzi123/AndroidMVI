@@ -1,4 +1,5 @@
 pluginManagement {
+    includeBuild("./build-logic")
     repositories {
         maven {
             url = uri("https://jitpack.io")
@@ -9,6 +10,11 @@ pluginManagement {
     }
 }
 dependencyResolutionManagement {
+    versionCatalogs {
+        create("libs") {
+            from(files("./libs.versions.toml"))
+        }
+    }
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
         maven {
@@ -20,6 +26,6 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "AndroidMVI"
-include(":app")
+include(":demo:app")
 include(":mvi")
 include(":template")
